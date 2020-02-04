@@ -13,19 +13,19 @@ YARN = yarn
 
 db: vendor db-reset fixtures ## Reset database and load fixtures
 
-db-reset: ## Reset database
+db-reset: vendor ## Reset database
 	@$(EXEC_PHP) php -r 'echo "Wait database...\n"; set_time_limit(30); require __DIR__."/config/bootstrap.php"; $$u = parse_url($$_ENV["DATABASE_URL"]); for(;;) { if(@fsockopen($$u["host"].":".($$u["port"] ?? 3306))) { break; }}'
 	@-$(SYMFONY) doctrine:database:drop --if-exists --force
 	@-$(SYMFONY) doctrine:database:create --if-not-exists
 	@$(SYMFONY) doctrine:schema:update --force
 
-db-cache: ## Clear doctrine database cache
+db-cache: vendor ## Clear doctrine database cache
 	@$(SYMFONY) doctrine:cache:clear-metadata
 	@$(SYMFONY) doctrine:cache:clear-query
 	@$(SYMFONY) doctrine:cache:clear-result
 	@echo "Cleared doctrine cache"
 
-fixtures: ## Load fixtures
+fixtures: vendor ## Load fixtures
 	@$(SYMFONY) d:f:l --no-interaction
 
 
@@ -80,10 +80,10 @@ update: install ## Update project dependencies
 	$(COMPOSER) update
 	$(YARN) upgrade
 
-cache-clear:
+cache-clear: vendor ## Clear cache for current environment
 	@$(SYMFONY) cache:clear --no-warmup
 
-cache-warmup: cache-clear
+cache-warmup: vendor cache-clear ## Clear and warm up cache for current environment
 	@$(SYMFONY) cache:warmup
 
 clean: purge ## Delete all dependencies
