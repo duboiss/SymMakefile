@@ -11,6 +11,8 @@ More info about [Makefile](https://en.wikipedia.org/wiki/Makefile).
 - make start : install project (including dependencies and database), load fixtures and launch web server
 
 ## Prerequisites
+[Symfony binary](https://github.com/symfony/cli) : you can do without it if you remove the associated commands from the Makefile.
+
 Help command requires unix tools (grep, sed...) to be installed.
 
 #### Windows users
