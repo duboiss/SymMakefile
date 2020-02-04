@@ -6,8 +6,9 @@ You can use it in your symfony projects for automate some tasks during your deve
 More info about [Makefile](https://en.wikipedia.org/wiki/Makefile).
 
 ## Examples
+- make lint : run lint for twig, xliff and yaml files
+- make purge : delete cache and logs
 - make start : install project (including dependencies and database), load fixtures and launch web server
-- male lint : run lint for twig, xliff and yaml files
 
 ## Prerequisites
 Help command requires unix tools (grep, sed...) to be installed.
