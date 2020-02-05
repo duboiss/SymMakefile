@@ -25,7 +25,7 @@ db-cache: vendor ## Clear doctrine database cache
 	@$(SYMFONY) doctrine:cache:clear-result
 	@echo "Cleared doctrine cache"
 
-fixtures: vendor ## Load fixtures
+fixtures: vendor ## Load fixtures - requires database with tables
 	@$(SYMFONY) d:f:l --no-interaction
 
 
