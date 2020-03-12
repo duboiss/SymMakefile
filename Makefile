@@ -31,9 +31,12 @@ fixtures: vendor ## Load fixtures - requires database with tables
 
 ##
 ## Lint
-.PHONY: lint lint-twig lint-xliff lint-yaml
+.PHONY: lint lint-container lint-twig lint-xliff lint-yaml
 
-lint: vendor lint-twig lint-xliff lint-yaml ## Run all lint commands
+lint: vendor lint-container lint-twig lint-xliff lint-yaml ## Run all lint commands
+
+lint-container: vendor ## Checks the services defined in the container
+	@$(SYMFONY) lint:container
 
 lint-twig: vendor ## Check twig syntax in /templates folder (prod environment)
 	@$(SYMFONY) lint:twig templates -e prod
