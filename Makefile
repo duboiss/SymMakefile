@@ -61,13 +61,13 @@ yarn.lock: package.json
 node_modules: yarn.lock ## Install yarn packages
 	@$(YARN)
 
-assets: node_modules ## Run Webpack Encore to compile assets
+assets: node_modules ## Run Webpack Encore to compile development assets
 	@$(YARN) dev
 
-build: node_modules
+build: node_modules ## Run Webpack Encore to compile production assets
 	@$(YARN) build
 
-watch: node_modules
+watch: node_modules ## Recompile assets automatically when files change
 	@$(YARN) watch
 
 
