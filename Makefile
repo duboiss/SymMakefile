@@ -33,7 +33,7 @@ fixtures: vendor ## Load fixtures - requires database with tables
 
 
 ##
-## Lint
+## Linting
 .PHONY: lint lint-container lint-twig lint-xliff lint-yaml
 
 lint: vendor lint-container lint-twig lint-xliff lint-yaml ## Run all lint commands
