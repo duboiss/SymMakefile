@@ -53,7 +53,7 @@ lint-yaml: vendor ## Check yaml syntax in /config and /translations folders
 
 ##
 ## Node.js
-.PHONY: assets
+.PHONY: assets build watch
 
 yarn.lock: package.json
 	$(YARN) upgrade
@@ -63,6 +63,12 @@ node_modules: yarn.lock ## Install yarn packages
 
 assets: node_modules ## Run Webpack Encore to compile assets
 	@$(YARN) dev
+
+build: node_modules
+	@$(YARN) build
+
+watch: node_modules
+	@$(YARN) watch
 
 
 ##
