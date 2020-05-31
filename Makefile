@@ -102,7 +102,7 @@ ci: db-validate lint security tests ## Continuous integration
 
 clean: purge ## Delete all dependencies
 	@rm -rf .env.local node_modules var vendor
-	@echo -e "Vendor and node_modules folder have been deleted !"
+	@echo -e "Var, vendor and node_modules folders have been deleted !"
 
 reset: unserve clean install
 
