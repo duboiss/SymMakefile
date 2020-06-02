@@ -20,6 +20,9 @@ You need to install [Make for Windows](http://gnuwin32.sourceforge.net/packages/
 
 For unix tools, if you use git, select "Use Git and optional Unix tools from the Command prompt" during its installation.
 
+## Installation
+Just copy the Makefile file at the root of your symfony project.
+
 ## Usage
 Display all available commands:
 ```sh
