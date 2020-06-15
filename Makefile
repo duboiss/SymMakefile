@@ -14,7 +14,6 @@ YARN = yarn
 db: vendor db-reset fixtures ## Reset database and load fixtures
 
 db-reset: vendor ## Reset database
-	@php -r 'echo "Wait database...\n"; set_time_limit(30); require __DIR__."/config/bootstrap.php"; $$u = parse_url($$_ENV["DATABASE_URL"]); for(;;) { if(@fsockopen($$u["host"].":".($$u["port"] ?? 3306))) { break; }}'
 	@-$(SYMFONY) doctrine:database:drop --if-exists --force
 	@-$(SYMFONY) doctrine:database:create --if-not-exists
 	@$(SYMFONY) doctrine:schema:update --force
