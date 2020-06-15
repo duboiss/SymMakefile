@@ -100,8 +100,8 @@ cache-warmup: vendor cache-clear ## Clear and warm up cache for current environm
 ci: db-validate lint security tests ## Continuous integration
 
 clean: purge ## Delete all dependencies
-	@rm -rf .env.local node_modules var vendor
-	@echo -e "Var, vendor and node_modules folders have been deleted !"
+	@rm -rf .env.local var vendor node_modules public/build
+	@echo -e "Var, vendor, node_modules and public/build folders have been deleted !"
 
 reset: unserve clean install
 
