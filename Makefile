@@ -14,16 +14,16 @@ SYMFONY = $(SYMFONY_BIN) console
 
 db: vendor db-reset fixtures ## Reset database and load fixtures
 
-db-reset: vendor ## Reset database
-	@-$(SYMFONY) doctrine:database:drop --if-exists --force
-	@-$(SYMFONY) doctrine:database:create --if-not-exists
-	@$(SYMFONY) doctrine:schema:update --force
-
 db-cache: vendor ## Clear doctrine database cache
 	@$(SYMFONY) doctrine:cache:clear-metadata
 	@$(SYMFONY) doctrine:cache:clear-query
 	@$(SYMFONY) doctrine:cache:clear-result
 	@echo "Cleared doctrine cache"
+
+db-reset: vendor ## Reset database
+	@-$(SYMFONY) doctrine:database:drop --if-exists --force
+	@-$(SYMFONY) doctrine:database:create --if-not-exists
+	@$(SYMFONY) doctrine:schema:update --force
 
 db-validate: vendor ## Checks doctrine's mapping configurations are valid
 	@$(SYMFONY) doctrine:schema:validate --skip-sync -vvv --no-interaction
@@ -59,7 +59,7 @@ yarn.lock: package.json
 	$(YARN) upgrade
 
 node_modules: yarn.lock ## Install yarn packages
-	@$(YARN)
+	@$(YARN) install
 
 assets: node_modules ## Run Webpack Encore to compile development assets
 	@$(YARN) dev
@@ -82,15 +82,7 @@ vendor: composer.lock ## Install dependencies in /vendor folder
 
 ##
 ## Project
-.PHONY: install start update cache-clear cache-warmup ci clean reset
-
-install: db assets ## Install project dependencies
-
-start: install serve ## Install project dependencies and launch symfony web server
-
-update: vendor node_modules ## Update project dependencies
-	@$(COMPOSER) update
-	@$(YARN) upgrade
+.PHONY: cache-clear cache-warmup ci clean install reset start update
 
 cache-clear: vendor ## Clear cache for current environment
 	@$(SYMFONY) cache:clear --no-warmup
@@ -104,11 +96,19 @@ clean: purge ## Delete all dependencies
 	@rm -rf .env.local var vendor node_modules public/build
 	@echo -e "Var, vendor, node_modules and public/build folders have been deleted !"
 
-reset: unserve clean install
+install: db assets ## Install project dependencies
+
+reset: unserve clean install ## Reset project
+
+start: install serve ## Install project dependencies and launch symfony web server
+
+update: vendor node_modules ## Update project dependencies
+	@$(COMPOSER) update
+	@$(YARN) upgrade
 
 
 ##
-## Symfony bin
+## Symfony binary
 .PHONY: serve unserve security
 
 serve: ## Run symfony web server in the background
