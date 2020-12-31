@@ -36,7 +36,8 @@ fixtures: vendor ## Load fixtures - requires database with tables
 ## Linting
 .PHONY: lint lint-container lint-twig lint-xliff lint-yaml
 
-lint: vendor lint-container lint-twig lint-xliff lint-yaml ## Run all lint commands
+lint: vendor ## Run all lint commands
+	make -j lint-container lint-twig lint-xliff lint-yaml
 
 lint-container: vendor ## Checks the services defined in the container
 	@$(SYMFONY) lint:container
@@ -56,7 +57,7 @@ lint-yaml: vendor ## Check yaml syntax in /config and /translations folders
 .PHONY: assets build watch
 
 yarn.lock: package.json
-	$(YARN) upgrade
+	@$(YARN) upgrade
 
 node_modules: yarn.lock ## Install yarn packages
 	@$(YARN) install
@@ -77,12 +78,18 @@ composer.lock: composer.json
 	@$(COMPOSER) update
 
 vendor: composer.lock ## Install dependencies in /vendor folder
-	@$(COMPOSER) install
+	@$(COMPOSER) install --no-progress
 
 
 ##
 ## Project
-.PHONY: cache-clear cache-warmup ci clean install reset start update
+.PHONY: install update cache-clear cache-warmup ci clean reset start
+
+install: db assets ## Install project dependencies
+
+update: vendor node_modules ## Update project dependencies
+	@$(COMPOSER) update
+	@$(YARN) upgrade
 
 cache-clear: vendor ## Clear cache for current environment
 	@$(SYMFONY) cache:clear --no-warmup
@@ -93,18 +100,12 @@ cache-warmup: vendor cache-clear ## Clear and warm up cache for current environm
 ci: db-validate lint security tests ## Continuous integration
 
 clean: purge ## Delete all dependencies
-	@rm -rf .env.local var vendor node_modules public/build
+	@rm -rf var vendor node_modules public/build
 	@echo -e "Var, vendor, node_modules and public/build folders have been deleted !"
-
-install: db assets ## Install project dependencies
 
 reset: unserve clean install ## Reset project
 
 start: install serve ## Install project dependencies and launch symfony web server
-
-update: vendor node_modules ## Update project dependencies
-	@$(COMPOSER) update
-	@$(YARN) upgrade
 
 
 ##
