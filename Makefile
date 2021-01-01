@@ -83,7 +83,7 @@ vendor: composer.lock ## Install dependencies in /vendor folder
 
 ##
 ## Project
-.PHONY: install update cache-clear cache-warmup ci clean reset start
+.PHONY: install update cache-clear cache-warmup ci clean purge reset start
 
 install: db assets ## Install project dependencies
 
@@ -102,6 +102,10 @@ ci: db-validate lint security tests ## Continuous integration
 clean: purge ## Delete all dependencies
 	@rm -rf var vendor node_modules public/build
 	@echo -e "Var, vendor, node_modules and public/build folders have been deleted !"
+
+purge: ## Purge cache and logs
+	@rm -rf var/cache/* var/log/*
+	@echo -e "Cache and logs have been deleted !"
 
 reset: unserve clean install ## Reset project
 
@@ -128,15 +132,6 @@ security: vendor ## Check packages vulnerabilities (using composer.lock)
 
 tests: vendor ## Run tests
 	@$(PHPUNIT)
-
-
-##
-## Utils
-.PHONY: purge
-
-purge: ## Purge cache and logs
-	@rm -rf var/cache/* var/log/*
-	@echo -e "Cache and logs have been deleted !"
 
 
 ##
