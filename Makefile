@@ -101,11 +101,11 @@ ci: db-validate lint security tests ## Continuous integration
 
 clean: purge ## Delete all dependencies
 	@rm -rf var vendor node_modules public/build
-	@echo -e "Var, vendor, node_modules and public/build folders have been deleted !"
+	@echo "Var, vendor, node_modules and public/build folders have been deleted !"
 
 purge: ## Purge cache and logs
 	@rm -rf var/cache/* var/log/*
-	@echo -e "Cache and logs have been deleted !"
+	@echo "Cache and logs have been deleted !"
 
 reset: unserve clean install ## Reset project
 
